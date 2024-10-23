@@ -1,0 +1,9 @@
+<style>
+    .concluido {
+        color: green;
+        font-weight: bold;
+    }
+    .faltando {
+        color: red;
+    }
+</style>
