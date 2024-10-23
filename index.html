@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Fiscais</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="styles.css"> <!-- Certifique-se de que este arquivo existe -->
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Contador de Fiscais -->
+        <div class="mt-6">
+            <h1 class="text-2xl font-bold mb-6">Contagem</h1>
+            <div id="contador" class="bg-gray-800 p-4 rounded shadow-md mt-2">
+                <div id="contador-funcao">
+                    <!-- Os dados do contador serão exibidos aqui -->
+                </div>
+            </div>
+        </div>
+        <br>
+       
+
+        <!-- Título do Cadastro de Fiscais -->
+        <h1 class="text-2xl font-bold mb-6">Cadastro de Fiscais</h1>
+        
+        <!-- Formulário de Cadastro -->
+        <form id="fiscal-form" class="bg-gray-800 p-6 rounded shadow-md grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="mb-4">
+                <label for="nome" class="block">Nome:</label>
+                <input type="text" id="nome" class="mt-1 block w-full border border-gray-600 bg-gray-700 text-white p-2" required>
+            </div>
+            <div class="mb-4">
+                <label for="cpf" class="block">CPF:</label>
+                <input type="text" id="cpf" class="mt-1 block w-full border border-gray-600 bg-gray-700 text-white p-2" required>
+            </div>
+            <div class="mb-4">
+                <label for="data-nascimento" class="block">Data de Nascimento:</label>
+                <input type="date" id="data-nascimento" class="mt-1 block w-full border border-gray-600 bg-gray-700 text-white p-2" required>
+            </div>
+            <div class="mb-4">
+                <label for="celular" class="block">Celular:</label>
+                <input type="text" id="celular" class="mt-1 block w-full border border-gray-600 bg-gray-700 text-white p-2" required>
+            </div>
+            <div class="mb-4">
+                <label for="email" class="block">Email:</label>
+                <input type="email" id="email" class="mt-1 block w-full border border-gray-600 bg-gray-700 text-white p-2" required>
+            </div>
+            <div class="mb-4">
+                <label for="banco" class="block">Banco:</label>
+                <select id="banco" class="mt-1 block w-full border border-gray-600 bg-gray-700 text-white p-2">
+                    <option value="001- Banco do Brasil">001- Banco do Brasil</option>
+                    <option value="104- Caixa Econômica Federal">104- Caixa Econômica Federal</option>
+                    <option value="341- Banco Itáu">341- Banco Itáu</option>
+                    <option value="237- Banco Bradesco">237- Banco Bradesco</option>
+                    <option value="033- Banco Santander">033- Banco Santander</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="agencia" class="block">Agência:</label>
+                <input type="text" id="agencia" class="mt-1 block w-full border border-gray-600 bg-gray-700 text-white p-2" required>
+            </div>
+            <div class="mb-4">
+                <label for="conta" class="block">Conta Corrente:</label>
+                <input type="text" id="conta" class="mt-1 block w-full border border-gray-600 bg-gray-700 text-white p-2" required>
+            </div>
+            <div class="mb-4 hidden" id="operacao-container">
+                <label for="operacao" class="block">Operação:</label>
+                <input type="text" id="operacao" class="mt-1 block w-full border border-gray-600 bg-gray-700 text-white p-2">
+            </div>
+            <div class="mb-4">
+                <label for="funcao" class="block">Função:</label>
+                <select id="funcao" class="mt-1 block w-full border border-gray-600 bg-gray-700 text-white p-2" required>
+                    <option value="" disabled selected>Selecione uma função</option> <!-- Placeholder -->
+                    <option value="Representante">Representante</option>
+                    <option value="Fiscal de Sala">Fiscal de Sala</option>
+                    <option value="Fiscal de Corredor">Fiscal de Corredor</option>
+                    <option value="ASD">ASD</option>
+                    <option value="Porteiro">Porteiro</option>
+                </select>
+            </div>
+            <button type="submit" class="bg-blue-600 text-white p-2 rounded col-span-1 md:col-span-2">Cadastrar</button>
+        </form>
+
+        <!-- Lista de Fiscais Cadastrados -->
+        <div class="mt-6">
+            <h2 class="text-lg font-semibold">Lista de Fiscais Cadastrados</h2>
+            <table id="fiscais-table" class="min-w-full bg-gray-800 rounded shadow-md">
+                <thead>
+                    <tr class="bg-gray-700 text-gray-300">
+                        <th class="py-2 px-4">Ord</th>
+                        <th class="py-2 px-4">Nome</th>
+                        <th class="py-2 px-4">Função</th>
+                        <th class="py-2 px-4">CPF</th>
+                        <th class="py-2 px-4">Data de Nasc.</th>
+                        <th class="py-2 px-4">Celular</th>
+                        <th class="py-2 px-4">Email</th>
+                        <th class="py-2 px-4">Banco</th>
+                        <th class="py-2 px-4">Agência</th>
+                        <th class="py-2 px-4">Conta</th>
+                        <th class="py-2 px-4">Operação</th>
+                    </tr>
+                </thead>
+                <tbody id="fiscais-body">
+                    <!-- Os fiscais cadastrados aparecerão aqui -->
+                </tbody>
+            </table>
+        </div>
+        <button id="export-btn" class="mt-4 bg-green-600 text-white p-2 rounded">Exportar para Excel</button>
+    </div>
+
+    
+
+    <script src="app.js"></script> <!-- Certifique-se de que este arquivo existe -->
+</body>
+</html>
